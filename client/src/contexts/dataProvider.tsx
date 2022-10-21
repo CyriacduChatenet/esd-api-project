@@ -1,5 +1,5 @@
 import { useGetFetch } from "@/hooks/useFetch";
-import { createContext, FC, ReactNode, useContext, useState } from "react";
+import { createContext, Dispatch, FC, ReactNode, SetStateAction, useContext, useState } from "react";
 
 interface IProps {
     children : ReactNode;
@@ -8,11 +8,13 @@ interface IProps {
 type Context = {
     categories : never[] | [];
     posts : never[] | [];
+    setPosts : any;
 };
 
 const dataContext = createContext<Context>({
     categories : [],
     posts : [],
+    setPosts : () => {},
 });
 
 export const DataProvider : FC<IProps> = ({children}) => {
@@ -23,7 +25,7 @@ export const DataProvider : FC<IProps> = ({children}) => {
     useGetFetch('http://localhost:3000/api/v1/post', setPosts);
 
     return (
-        <dataContext.Provider value={{categories, posts}}>
+        <dataContext.Provider value={{categories, posts, setPosts}}>
             {children}
         </dataContext.Provider>
     );
